@@ -33,8 +33,11 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/resume', require('./routes/resume.routes'));
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
 
-app.use(express.static(path.join(__dirname, 'dist')));
-app.get(/.*/, (req, res) => res.sendFile(path.join(__dirname, 'dist', 'index.html')));
+const distPath = path.join(__dirname, 'dist');
+app.use(express.static(distPath));
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
