@@ -7,17 +7,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:4173'], credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 
 const connectDB = async () => {
   try {
-    let uri = process.env.MONGODB_URI;
+    const uri = process.env.MONGODB_URI;
     if (!uri) {
-      const { MongoMemoryServer } = require('mongodb-memory-server');
-      const mongod = await MongoMemoryServer.create();
-      uri = mongod.getUri();
-      console.log('⚡ In-Memory MongoDB started');
+      console.error('❌ MONGODB_URI not set. Please add it to environment variables.');
+      process.exit(1);
     }
     await mongoose.connect(uri);
     console.log('✅ MongoDB connected');
