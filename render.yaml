@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: intelli-resume-analyzer
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: MONGODB_URI
+        sync: false
